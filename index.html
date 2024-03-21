@@ -25,8 +25,9 @@
             "esri/views/MapView",
             "esri/widgets/Search",
             "esri/layers/FeatureLayer",
-            "esri/PopupTemplate"
-        ], function(esriConfig, Map, MapView, Search, FeatureLayer, PopupTemplate) {
+            "esri/PopupTemplate",
+            "esri/widgets/Editor"
+        ], function(esriConfig, Map, MapView, Search, FeatureLayer, PopupTemplate, Editor) {
             esriConfig.apiKey = "AAPK6a0e40e0c7584766bd0465bfdf4e9c47A0l6-hh-vuT_78RTwWVul2CsxgjEGw0QVGUBaBJUYZ_C3oE3ps1rsei8uf5gB6HW";
             // Create a map
             const map = new Map({
@@ -49,10 +50,23 @@
             });
             // Define campground feature layer URL
             const campgroundLayerUrl = "https://services7.arcgis.com/ZVNY4kBjkOFe2xT8/arcgis/rest/services/FloridaStParkCamping/FeatureServer";
-            // Create campground feature layer
+            
+            // Define the custom symbol for the campground points
+            const campgroundSymbol = {
+                type: "picture-marker",
+                url: "camping_icon.png", // Path to your custom icon
+                width: "14px",
+                height: "14px"
+            };
+
+            // Create the campground feature layer with the custom symbol
             const campgroundLayer = new FeatureLayer({
                 url: campgroundLayerUrl,
                 outFields: ["*"],
+                renderer: {
+                    type: "simple", // Use a simple renderer
+                    symbol: campgroundSymbol // Apply the custom symbol
+                },
                 popupTemplate: {
                     title: "{SITE_NAME}",
                     content: [
@@ -65,16 +79,57 @@
                 }
             });
 
-            // Add campground layer to the map
+            // Add the campground layer to the map
             map.add(campgroundLayer);
-            // Event listener for search
-            searchWidget.on("select-result", function(event) {
-                // Zoom to the selected campground
-                view.goTo({
-                    target: event.result.extent,
-                    zoom: 12
-                });
+
+            const airportIconSymbol = {
+							type: "picture-marker",
+							url: "flight_takeoff_FILL0_wght400_GRAD0_opsz24.png",
+							width: "32px",
+							height: "32px"
+			};
+
+			// Update the renderer for myAirports layer
+			const airportIconRenderer = {
+							type: "simple",
+							symbol: airportIconSymbol
+			};
+
+                        // Event listener for search
+                        searchWidget.on("select-result", function(event) {
+                            // Zoom to the selected campground
+                            view.goTo({
+                                target: event.result.extent,
+                                zoom: 12
+                            });
+                        });
+            //adding the const for the feature layer
+            const myCampsites = new FeatureLayer({
+            url: "https://services.arcgis.com/LBbVDC0hKPAnLRpO/arcgis/rest/services/Camp_Sites/FeatureServer",
+            
+            //adding the popup here
+            outFields: ["Campsites"],
+            
+
             });
+
+            //adding the feature layer to the map
+            map.add(myCampsites);
+
+            // Set the point layer's LayerInfo
+            const pointInfos = {
+            layer: myCampsites
+            }
+
+            // Begin Editor constructor
+            const editor = new Editor({
+            view: view,
+            layerInfos: [pointInfos]
+            }); // End Editor constructor
+
+            // Add the widget to the view
+            view.ui.add(editor, "top-right");
+
         });
     </script>
 </body>
