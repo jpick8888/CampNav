@@ -84,7 +84,7 @@
 
             const airportIconSymbol = {
 							type: "picture-marker",
-							url: "flight_takeoff_FILL0_wght400_GRAD0_opsz24.png",
+							url: "my_camping_icon.jpg",
 							width: "32px",
 							height: "32px"
 			};
@@ -106,6 +106,7 @@
             //adding the const for the feature layer
             const myCampsites = new FeatureLayer({
             url: "https://services.arcgis.com/LBbVDC0hKPAnLRpO/arcgis/rest/services/Camp_Sites/FeatureServer",
+            renderer: airportIconRenderer,
             
             //adding the popup here
             outFields: ["Campsites"],
