@@ -26,8 +26,9 @@
             "esri/widgets/Search",
             "esri/layers/FeatureLayer",
             "esri/PopupTemplate",
-            "esri/widgets/Editor"
-        ], function(esriConfig, Map, MapView, Search, FeatureLayer, PopupTemplate, Editor) {
+            "esri/widgets/Editor",
+            "esri/widgets/Legend"
+        ], function(esriConfig, Map, MapView, Search, FeatureLayer, PopupTemplate, Editor, Legend) {
             esriConfig.apiKey = "AAPK6a0e40e0c7584766bd0465bfdf4e9c47A0l6-hh-vuT_78RTwWVul2CsxgjEGw0QVGUBaBJUYZ_C3oE3ps1rsei8uf5gB6HW";
             // Create a map
             const map = new Map({
@@ -55,8 +56,8 @@
             const campgroundSymbol = {
                 type: "picture-marker",
                 url: "camping_icon.png", // Path to your custom icon
-                width: "14px",
-                height: "14px"
+                width: "18px",
+                height: "18px"
             };
 
             // Create the campground feature layer with the custom symbol
@@ -85,8 +86,8 @@
             const airportIconSymbol = {
 							type: "picture-marker",
 							url: "my_camping_icon.jpg",
-							width: "32px",
-							height: "32px"
+							width: "18px",
+							height: "18px"
 			};
 
 			// Update the renderer for myAirports layer
@@ -124,12 +125,29 @@
 
             // Begin Editor constructor
             const editor = new Editor({
-            view: view,
-            layerInfos: [pointInfos]
+                view: view,
+                layerInfos: [pointInfos]
             }); // End Editor constructor
 
             // Add the widget to the view
             view.ui.add(editor, "top-right");
+
+            // Add Legend widget to view
+			const legend = new Legend({
+                view: view,
+                layerInfos: [
+                    {
+                        layer: campgroundLayer,
+                        title: "Campsites"
+                    },
+                    {
+                        layer: myCampsites,
+                        title: "My Campsites"
+                    },
+                ]
+            });
+
+            view.ui.add(legend, "bottom-left");
 
         });
     </script>
