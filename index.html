@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>CampNav - Find Your Perfect Campground</title>
+<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+<link href="https://api.mapbox.com/mapbox-gl-js/v3.2.0/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v3.2.0/mapbox-gl.js"></script>
+<style>
+body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
+#map { position: absolute; top: 0; right: 0; bottom: 0; width: 75%; }
+#sidebar { position: absolute; top: 0; left: 0; bottom: 0; width: 25%; background-color: #f0f0f0; padding: 20px; }
+.search-filter { margin-bottom: 20px; }
+.filters label { display: block; margin-bottom: 10px; }
+.campground-box { background-color: #fff; border: 1px solid #ddd; padding: 10px; margin-bottom: 10px; }
+</style>
+</head>
+<body>
+<div id="map"></div>
+<div id="sidebar">
+    <h1>CampNav</h1>
+    <div class="search-filter">
+        <!-- Search bar -->
+        <input type="text" id="searchInput" placeholder="Search for campgrounds..." style="width: calc(100% - 40px); padding: 5px;">
+        <!-- Filter options -->
+        <div class="filters">
+            <label><input type="checkbox" id="tentCheckbox"> Tent Sites</label>
+            <label><input type="checkbox" id="rvCheckbox"> RV Sites</label>
+            <label><input type="checkbox" id="petsCheckbox"> Pets Allowed</label>
+            <label><input type="checkbox" id="priceCheckbox"> Price</label>
+        </div>
+        <!-- Filter button (optional) -->
+        <!-- <button onclick="applyFilters()">Apply Filters</button> -->
+    </div>
+    <div id="campground-list">
+        <!-- Campground list will be dynamically populated here -->
+        <!-- Example campground box -->
+        <div class="campground-box">
+            <h3>Campground Name</h3>
+            <p>Facilities:...</p>
+            <p>Number of campsites:...</p>
+            <!-- Add more details as needed -->
+        </div>
+    </div>
+</div>
+<script>
+    mapboxgl.accessToken = 'pk.eyJ1IjoianBpY2s4ODg4IiwiYSI6ImNsb2Z5ejd4NjBzYnAyaXBsMnpsOWJna2gifQ.X36B7ibzimQF5J98FLDW4A';
+    const map = new mapboxgl.Map({
+        container: 'map', // container ID
+        style: 'mapbox://styles/mapbox/streets-v11', // style URL
+        center: [-96, 37.8], // starting position [lng, lat]
+        zoom: 3 // starting zoom
+    });
+</script>
+</body>
+</html>
