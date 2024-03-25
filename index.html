@@ -1,22 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CampNav - Find Your Perfect Campground</title>
-    <!-- Include Esri.js CSS -->
-    <link rel="stylesheet" href="https://js.arcgis.com/4.25/esri/themes/light/main.css">
-    <!-- Include Esri.js library -->
-    <script src="https://js.arcgis.com/4.25/"></script>
-    <!-- Custom CSS for styling -->
-    <style>
-        body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
-        #map { position: absolute; top: 0; right: 0; bottom: 0; left: 0; }
-    </style>
-</head>
-<body>
-    <!-- Map container -->
-    <div id="map"></div>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>CampNav - Find Your Perfect Campground</title>
+        <!-- Include Esri.js CSS -->
+        <link rel="stylesheet" href="https://js.arcgis.com/4.25/esri/themes/light/main.css">
+        <!-- Include Esri.js library -->
+        <script src="https://js.arcgis.com/4.25/"></script>
+        <!-- Include Google Fonts link for Anton font -->
+        <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+        <!-- Custom CSS for styling -->
+        <style>
+            body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
+            #map { position: absolute; top: 0; right: 0; bottom: 0; left: 0; }
+            /* Apply Anton font only to CampNav */
+            .anton-regular {
+                font-family: "Anton", sans-serif;
+                font-weight: 400;
+                font-style: italic;
+                color: orangered;
+                text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;
+            }
+        </style>
+    </head>
+    <body>
+        <!-- Map container -->
+        <div id="map"></div>
+        
+        <div style="background-color: rgba(240, 240, 240, 0); padding: 10px; position: absolute; bottom: 5px; right: 0;">
+            <!-- Apply Anton font to CampNav -->
+            <h1 class="anton-regular" style="margin: 0;">CampNav</h1>
+        </div>
     <!-- JavaScript for Esri.js functionality -->
     <script>
         require([
@@ -38,8 +53,8 @@
             const view = new MapView({
                 container: "map",
                 map: map,
-                center: [-96, 37.8], // Example center coordinates
-                zoom: 4 // Example zoom level
+                center: [-81.5158, 27.6648], // Example center coordinates
+                zoom: 6 // Example zoom level
             });
             // Add a search widget
             const searchWidget = new Search({
@@ -83,17 +98,17 @@
             // Add the campground layer to the map
             map.add(campgroundLayer);
 
-            const airportIconSymbol = {
+            const campIconSymbol = {
 							type: "picture-marker",
 							url: "my_camping_icon.jpg",
 							width: "18px",
 							height: "18px"
 			};
 
-			// Update the renderer for myAirports layer
-			const airportIconRenderer = {
+			// Update the renderer for mycamps layer
+			const campIconRenderer = {
 							type: "simple",
-							symbol: airportIconSymbol
+							symbol: campIconSymbol
 			};
 
                         // Event listener for search
@@ -107,7 +122,7 @@
             //adding the const for the feature layer
             const myCampsites = new FeatureLayer({
             url: "https://services.arcgis.com/LBbVDC0hKPAnLRpO/arcgis/rest/services/Camp_Sites/FeatureServer",
-            renderer: airportIconRenderer,
+            renderer: campIconRenderer,
             
             //adding the popup here
             outFields: ["Campsites"],
