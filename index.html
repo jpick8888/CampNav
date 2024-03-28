@@ -131,7 +131,7 @@
             renderer: campIconRenderer,
             
             //adding the popup here
-            outFields: ["Campsites"],
+            outFields: ["Campsite"],
             
 
             });
@@ -141,13 +141,13 @@
 
             // Set the point layer's LayerInfo
             const pointInfos = {
-            layer: myCampsites
+                            layer: myCampsites
             }
 
             // Begin Editor constructor
             const editor = new Editor({
-                view: view,
-                layerInfos: [pointInfos]
+                            view: view,
+                            layerInfos: [pointInfos]
             }); // End Editor constructor
 
             // Add the widget to the view
