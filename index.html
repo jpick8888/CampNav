@@ -106,71 +106,87 @@
 
             const campIconSymbol = {
                 type: "picture-marker",
-                url: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='24' viewBox='0 -960 960 960' width='24'%3E%3Cpath d='M80-80v-186l350-472-70-94 64-48 56 75 56-75 64 48-70 94 350 472v186H80Zm400-591L160-240v80h120l200-280 200 280h120v-80L480-671ZM378-160h204L480-302 378-160Zm102-280 200 280-200-280-200 280 200-280Z' fill='orangered'/%3E%3C/svg%3E",
-                width: "18px",
-                height: "18px"
+                url: "tent_icon.png",
+                width: "20px",
+                height: "20px"
 			};
 
-			// Update the renderer for mycamps layer
-			const campIconRenderer = {
-							type: "simple",
-							symbol: campIconSymbol
-			};
+			        // Update the renderer for mycamps layer
+            const campIconRenderer = {
+            type: "simple",
+            symbol: campIconSymbol
+        };
 
-                        // Event listener for search
-                        searchWidget.on("select-result", function(event) {
-                            // Zoom to the selected campground
-                            view.goTo({
-                                target: event.result.extent,
-                                zoom: 12
-                            });
-                        });
-            //adding the const for the feature layer
-            const myCampsites = new FeatureLayer({
-            url: "https://services.arcgis.com/LBbVDC0hKPAnLRpO/arcgis/rest/services/Camp_Sites/FeatureServer",
-            renderer: campIconRenderer,
-            
-            //adding the popup here
-            outFields: ["Campsite"],
-            
-
+        // Event listener for search
+        searchWidget.on("select-result", function(event) {
+            // Zoom to the selected campground
+            view.goTo({
+                target: event.result.extent,
+                zoom: 12
             });
-
-            //adding the feature layer to the map
-            map.add(myCampsites);
-
-            // Set the point layer's LayerInfo
-            const pointInfos = {
-                            layer: myCampsites
-            }
-
-            // Begin Editor constructor
-            const editor = new Editor({
-                            view: view,
-                            layerInfos: [pointInfos]
-            }); // End Editor constructor
-
-            // Add the widget to the view
-            view.ui.add(editor, "top-right");
-
-            // Add Legend widget to view
-			const legend = new Legend({
-                view: view,
-                layerInfos: [
-                    {
-                        layer: campgroundLayer,
-                        title: "Campsites"
-                    },
-                    {
-                        layer: myCampsites,
-                        title: "My Campsites"
-                    },
-                ]
-            });
-
-            view.ui.add(legend, "bottom-left");
-
         });
-    </script>
+        
+        const CampsiteLabels = {
+            symbol: {
+                type: "text",
+                color: "#000000",
+                haloColor: "#FFFFFF",
+                haloSize: "1px",
+                font: {
+                    size: "12px",
+                    family: "Noto Sans",
+                    style: "italic",
+                    weight: "normal"
+                }
+            },
+            labelPlacement: "above-center",
+            labelExpressionInfo: {
+                expression: "$feature.Campsites"
+            }
+        };
+        //adding the const for the feature layer
+        const myCampsites = new FeatureLayer({
+            url: "https://services.arcgis.com/LBbVDC0hKPAnLRpO/arcgis/rest/services/Camp_Sites/FeatureServer",
+            outFields: ["Campsites"],
+            renderer: campIconRenderer,
+            labelingInfo: [CampsiteLabels]
+        });
+
+        //adding the feature layer to the map
+        map.add(myCampsites);
+
+        // Set the point layer's LayerInfo
+        const pointInfos = {
+            layer: myCampsites
+        }
+
+        // Begin Editor constructor
+        const editor = new Editor({
+            view: view,
+            layerInfos: [pointInfos]
+        }); // End Editor constructor
+
+        // Add the widget to the view
+        view.ui.add(editor, "top-right");
+
+        // Add Legend widget to view
+        const legend = new Legend({
+            view: view,
+            layerInfos: [
+                {
+                    layer: campgroundLayer,
+                    title: "Campsites"
+                },
+                {
+                    layer: myCampsites,
+                    title: "My Campsites"
+                },
+            ]
+        });
+
+        view.ui.add(legend, "bottom-left");
+
+    });
+</script>
 </body>
 </html>
